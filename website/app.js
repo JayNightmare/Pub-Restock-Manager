@@ -83,6 +83,17 @@ addDrinkButton.addEventListener("click", () => {
 
 // Function to add a drink to the list
 function addDrinkToList(drinkName) {
+  // Check if the drink already exists in the Restocking List
+  const existingDrink = Array.from(drinkList.children).find((item) => {
+    return item.querySelector("span").textContent === drinkName;
+  });
+
+  if (existingDrink) {
+    alert(`${drinkName} is already in the Restocking List.`);
+    return; // Exit if the drink is already in the list
+  }
+
+  // Create List Item
   const listItem = document.createElement("li");
   listItem.classList.add("drink-item");
 
@@ -90,7 +101,7 @@ function addDrinkToList(drinkName) {
   const name = document.createElement("span");
   name.textContent = drinkName;
 
-  // Buttons and count
+  // Buttons and Count
   const buttonsContainer = document.createElement("div");
   buttonsContainer.classList.add("buttons");
 
