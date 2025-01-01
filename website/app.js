@@ -180,28 +180,73 @@ printButton.addEventListener("click", () => {
 // Function to generate and print the receipt
 function generateReceipt(drinks) {
   const receiptWindow = window.open("", "_blank");
-  receiptWindow.document.write(
-    "<html><head><title>Receipt</title></head><body>"
-  );
-  receiptWindow.document.write("<h1>Restocking Receipt</h1>");
-  receiptWindow.document.write(
-    '<table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">'
-  );
-  receiptWindow.document.write(
-    "<thead><tr><th>Drink</th><th>Quantity</th></tr></thead><tbody>"
-  );
-
-  drinks.forEach((drink) => {
-    receiptWindow.document.write(
-      `<tr><td>${drink.name}</td><td>${drink.count}</td></tr>`
-    );
-  });
-
-  receiptWindow.document.write("</tbody></table>");
-  receiptWindow.document.write(
-    '<p style="margin-top: 20px;">Thank you for using Pub Restock Manager!</p>'
-  );
-  receiptWindow.document.write("</body></html>");
+  receiptWindow.document.write(`
+    <html>
+      <head>
+        <title>Receipt</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 57mm; /* Set the width to match PDQ paper */
+            font-size: 12px; /* Adjust font size for small receipt */
+          }
+          h1 {
+            text-align: center;
+            font-size: 14px;
+            margin: 5px 0;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+          }
+          th, td {
+            padding: 5px;
+            text-align: left;
+            font-size: 12px;
+            border-bottom: 1px dashed #333;
+          }
+          th {
+            font-weight: bold;
+          }
+          tr:last-child td {
+            border-bottom: none; /* Remove border for the last row */
+          }
+          p {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 12px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Restocking Receipt</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Drink</th>
+              <th>Qty</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${drinks
+              .map(
+                (drink) => `
+                <tr>
+                  <td>${drink.name}</td>
+                  <td>${drink.count}</td>
+                </tr>
+              `
+              )
+              .join("")}
+          </tbody>
+        </table>
+        <p>Thank you for using Pub Restock Manager!</p>
+      </body>
+    </html>
+  `);
   receiptWindow.document.close();
   receiptWindow.print();
 }
