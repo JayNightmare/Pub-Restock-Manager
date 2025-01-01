@@ -470,17 +470,27 @@ body.dark-mode .suggestions-box div:hover {
 
 @media (max-width: 768px) {
   .drink-card-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
-  }
-
-  .container {
-    margin: 20px;
-    padding: 15px;
+    grid-template-columns: repeat(3, 1fr); /* 2 cards per row */
   }
 }
 
 @media (max-width: 480px) {
   .drink-card-container {
-    grid-template-columns: 1fr; /* 1 card per row */
+    grid-template-columns: repeat(2, 1fr); /* 1 card per row */
+  }
+
+  .nav-left h1 {
+    font-size: 20px;
+    margin-right: 15px;
+  }
+
+  .drink-item > span {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 365px) {
+  .input-section {
+    flex-direction: column;
   }
 }
