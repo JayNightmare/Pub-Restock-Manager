@@ -354,12 +354,6 @@ renderDrinkList();
 const loadDrinksButton = document.getElementById("load-drinks");
 
 loadDrinksButton.addEventListener("click", () => {
-  // Check if there are drinks in the Manage Drinks List
-  if (drinks.length === 0) {
-    alert("No drinks available in the Manage Drinks List.");
-    return;
-  }
-
   // Loop through drinks and add them to the Restocking List
   drinks.forEach((drink) => {
     // Check if the drink is already in the Restocking List
@@ -375,4 +369,201 @@ loadDrinksButton.addEventListener("click", () => {
   alert("Drinks have been loaded into the Restocking List!");
 });
 
+const loadOptionsModal = document.getElementById("load-options-modal");
+const loadFromDropdownButton = document.getElementById("load-from-dropdown");
+const loadFromFileInput = document.getElementById("load-from-file");
+const cancelLoadButton = document.getElementById("cancel-load");
+
+// Show Load Options Modal
+document.getElementById("load-items-order").addEventListener("click", () => {
+  loadOptionsModal.style.display = "block";
+});
+
+// Cancel Load
+cancelLoadButton.addEventListener("click", () => {
+  loadOptionsModal.style.display = "none";
+});
+
+// Load from Dropdown
+loadFromDropdownButton.addEventListener("click", () => {
+  const selectedPreset = savedItemsList.value;
+
+  // Load from localStorage
+  const savedDrinks = JSON.parse(localStorage.getItem(selectedPreset));
+  if (savedDrinks) {
+    drinks = [...savedDrinks];
+    saveDrinks();
+    renderDrinkList();
+    alert(
+      `List "${selectedPreset.replace(
+        "drinks-preset-",
+        ""
+      )}" loaded successfully!`
+    );
+  } else {
+    alert("Failed to load the selected list.");
+  }
+
+  loadOptionsModal.style.display = "none"; // Close modal
+});
+
+// Load from File
+loadFromFileInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const fileContent = e.target.result;
+      // Parse the file content into the drinks array
+      drinks = fileContent.split(",").map((item) => item.trim());
+
+      // Prompt the user for a name for the list
+      const listName = prompt("Enter a name for this list:");
+      if (!listName) {
+        alert("List name cannot be empty. List will not be saved to dropdown.");
+        return;
+      }
+
+      // Save the list to localStorage under the given name
+      localStorage.setItem(`drinks-preset-${listName}`, JSON.stringify(drinks));
+
+      // Update the dropdown with the new list
+      updateSavedItemsDropdown();
+
+      // Save the list to global drinks and update the UI
+      saveDrinks();
+      renderDrinkList();
+
+      alert(`List "${listName}" loaded successfully from file and saved.`);
+    };
+    reader.readAsText(file);
+  }
+
+  loadOptionsModal.style.display = "none"; // Close modal
+});
+
 // -- //
+
+// Save Items Logic
+
+const saveItemsButton = document.getElementById("save-items-order");
+const savedItemsList = document.getElementById("saved-items-list");
+
+// Update Dropdown
+function updateSavedItemsDropdown() {
+  savedItemsList.innerHTML = '<option value="">Select a saved list</option>'; // Clear existing options
+  Object.keys(localStorage).forEach((key) => {
+    if (key.startsWith("drinks-preset-")) {
+      const option = document.createElement("option");
+      option.value = key;
+      option.textContent = key.replace("drinks-preset-", ""); // Remove prefix for display
+      savedItemsList.appendChild(option);
+    }
+  });
+}
+
+// Initialize dropdown on page load
+updateSavedItemsDropdown();
+
+// Save current drinks list to localStorage
+saveItemsButton.addEventListener("click", () => {
+  const presetName = prompt("Enter a name for this list:");
+  if (!presetName) {
+    alert("List name cannot be empty.");
+    return;
+  }
+
+  // Save drinks to localStorage
+  const currentDrinks = [...drinks];
+  localStorage.setItem(
+    `drinks-preset-${presetName}`,
+    JSON.stringify(currentDrinks)
+  );
+
+  // Save as .txt file
+  const blob = new Blob([currentDrinks.join(",")], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `${presetName}.txt`;
+  link.click();
+
+  // Update dropdown
+  updateSavedItemsDropdown();
+  alert(`List "${presetName}" saved successfully!`);
+});
+
+// Delete Button Logic
+const deleteItemsButton = document.getElementById("delete-items-order");
+const deleteOptionsModal = document.getElementById("delete-options-modal");
+const clearCurrentListButton = document.getElementById("clear-current-list");
+const deleteEntireListButton = document.getElementById("delete-entire-list");
+const cancelDeleteButton = document.getElementById("cancel-delete");
+
+// Show the delete options modal
+deleteItemsButton.addEventListener("click", () => {
+  deleteOptionsModal.style.display = "block";
+});
+
+// Hide the modal on cancel
+cancelDeleteButton.addEventListener("click", () => {
+  deleteOptionsModal.style.display = "none";
+});
+
+clearCurrentListButton.addEventListener("click", () => {
+  // Clear the current list in both UI and memory
+  drinks = []; // Clear the global drinks array
+  saveDrinks(); // Save the cleared drinks array to localStorage
+  renderDrinkList(); // Refresh the Manage Items UI
+
+  alert("The current list has been cleared.");
+  deleteOptionsModal.style.display = "none"; // Close the modal
+});
+
+deleteEntireListButton.addEventListener("click", () => {
+  // Retrieve all keys from localStorage
+  const keys = Object.keys(localStorage);
+
+  // Filter keys that match the prefix "drinks-preset-"
+  const presetKeys = keys.filter((key) => key.startsWith("drinks-preset-"));
+
+  if (presetKeys.length === 0) {
+    alert("No saved lists found to delete.");
+    return;
+  }
+
+  // Confirm deletion
+  const confirmMessage =
+    presetKeys.length === 1
+      ? `Are you sure you want to delete the list "${presetKeys[0].replace(
+          "drinks-preset-",
+          ""
+        )}"?`
+      : `Are you sure you want to delete all saved lists (${presetKeys.length} lists)?`;
+  if (!confirm(confirmMessage)) return;
+
+  // Delete matching keys from localStorage
+  presetKeys.forEach((key) => {
+    localStorage.removeItem(key);
+  });
+
+  // Update the dropdown options
+  updateSavedItemsDropdown();
+
+  // If the current drinks list matches a deleted preset, clear the UI
+  drinks = [];
+  saveDrinks();
+  renderDrinkList();
+
+  // Notify the user
+  alert(
+    presetKeys.length === 1
+      ? `The list "${presetKeys[0].replace(
+          "drinks-preset-",
+          ""
+        )}" has been deleted.`
+      : `All saved lists (${presetKeys.length} lists) have been deleted.`
+  );
+
+  // Close the modal
+  deleteOptionsModal.style.display = "none";
+});
