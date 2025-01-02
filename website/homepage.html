@@ -21,6 +21,7 @@
       </button>
     </div>
   </nav>
+
   <!-- Manage Drinks Modal -->
   <div id="manage-drinks-modal" class="modal">
     <div class="modal-content">
@@ -30,6 +31,47 @@
         <input type="text" id="new-drink-name" placeholder="Enter item name" required>
         <button type="submit">Add Items</button>
       </form>
+      <div class="load-state-container">
+        <div class="save-load-buttons">
+          <button class="load-drinks save" id="save-items-order">Save</button>
+          <button class="load-drinks load" id="load-items-order">Load</button>
+          <button class="load-drinks delete" id="delete-items-order">
+            <svg viewBox="0 0 448 512" width="16" title="trash">
+              <path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z" />
+            </svg>
+          </button>
+          <div id="delete-options-modal" class="modal">
+            <div class="modal-content">
+              <h3>Delete Options</h3>
+              <p>What do you want to delete?</p>
+              <div class="delete-list-options">
+                <button id="clear-current-list">Clear Current List</button>
+                <button id="delete-entire-list">Delete Entire List</button>
+              </div>
+              <button id="cancel-delete">Cancel</button>
+            </div>
+          </div>
+          <div id="load-options-modal" class="modal">
+            <div class="modal-content">
+              <h3>Load Options</h3>
+              <p>How would you like to load your list?</p>
+              <div class="load-options-loading-options">
+                <div class="dropdown-options">
+                  <button class="file-label" id="load-from-dropdown">Load from Dropdown</button>
+                  <select id="saved-items-list">
+                    <option value="">Select a saved list</option>
+                  </select>
+                </div>
+                <label for="load-from-file" class="file-label">
+                  Load from File
+                  <input type="file" id="load-from-file" accept=".txt" hidden>
+                </label>
+                <button id="cancel-load">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <ul id="drink-list-management" class="drink-card-container"></ul>
     </div>
   </div>
@@ -42,10 +84,10 @@
       <button id="add-drink">Add</button>
     </div>
     <div id="restock-list">
-      <button id="load-drinks">Load Items</button>
+      <button class="load-drinks" id="load-drinks">Load Items</button>
       <h2>Restocking List</h2>
       <ul id="drink-list"></ul>
-      <button id="print-receipt">Print Receipt</button>
+      <button class="print-receipt" id="print-receipt">Print Receipt</button>
     </div>
   </div>
 
