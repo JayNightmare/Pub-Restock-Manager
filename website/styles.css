@@ -25,7 +25,7 @@ h2 {
 #add-drink-form {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   input {
     margin-right: 5px;
@@ -146,7 +146,7 @@ body.dark-mode button.remove:hover svg {
   fill: #ff6b6b;
 }
 
-#print-receipt {
+.print-receipt {
   display: block;
   margin: 20px auto 0;
   padding: 10px 20px;
@@ -158,7 +158,7 @@ body.dark-mode button.remove:hover svg {
   cursor: pointer;
 }
 
-#print-receipt:hover {
+.print-receipt:hover {
   background-color: #e0a800;
 }
 
@@ -183,23 +183,12 @@ body.dark-mode .modal-content {
   color: #f4f4f9;
 }
 
-body.dark-mode input,
-body.dark-mode button {
-  background-color: #444;
-  color: #f4f4f9;
-  border-color: #555;
-}
-
-body.dark-mode button:hover {
-  background-color: #555;
-}
-
-body.dark-mode #print-receipt {
+body.dark-mode .print-receipt {
   background-color: #ffa500;
   color: #333;
 }
 
-body.dark-mode #print-receipt:hover {
+body.dark-mode .print-receipt:hover {
   background-color: #cc8400;
 }
 
@@ -448,7 +437,7 @@ body.dark-mode .suggestions-box div:hover {
 
 /* Load Drinks Styling */
 
-#load-drinks {
+.load-drinks {
   display: block;
   margin: 10px auto;
   padding: 10px 20px;
@@ -460,8 +449,128 @@ body.dark-mode .suggestions-box div:hover {
   cursor: pointer;
 }
 
-#load-drinks:hover {
+.load-drinks:hover {
   background-color: #138496;
+}
+
+/* -- */
+
+/* Manage Items Button Group */
+.load-state-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+.load-state-container > .save-load-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0px;
+}
+
+.load-state-container .save,
+.load-state-container .load,
+.load-state-container .delete {
+  margin-top: 0;
+}
+
+.load-state-container .save,
+.load-state-container .load {
+  margin-right: 5px;
+}
+
+.load-state-container .load,
+.load-state-container .delete {
+  margin-left: 5px;
+}
+
+.load-state-container .delete {
+  background-color: #dc3545;
+  padding: 10px;
+  font-size: 0;
+
+  svg {
+    fill: white;
+  }
+}
+
+.load-options-loading-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.load-options-loading-options > .dropdown-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#saved-items-list {
+  flex: 1;
+  margin: 0 10px;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.delete-list-options {
+  display: flex;
+
+  #clear-current-list {
+    background-color: #ffc107;
+  }
+
+  #delete-entire-list {
+    background-color: #dc3545;
+    color: white;
+  }
+}
+
+#delete-options-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#delete-options-modal .modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+}
+
+#delete-options-modal button {
+  margin: 10px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.file-label {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px 10px 10px 10px;
+}
+
+.file-label:hover {
+  background-color: #0056b3;
 }
 
 /* -- */
