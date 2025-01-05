@@ -1,0 +1,621 @@
+/* General Reset */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+html,
+body {
+    touch-action: manipulation;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+.input-section,
+#add-drink-form {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    input {
+        margin-right: 5px;
+    }
+}
+
+#drink-input,
+#new-drink-name {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#add-drink,
+#add-drink-form>button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#add-drink:hover {
+    background-color: #218838;
+}
+
+#restock-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.drink-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    span {
+        padding: 0 5px 0 5px;
+    }
+}
+
+button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.add {
+    background-color: #007bff;
+    color: white;
+    width: 48px;
+    height: 32px;
+}
+
+button.add:hover {
+    background-color: #0056b3;
+}
+
+button.subtract {
+    background-color: #dc3545;
+    color: white;
+    width: 48px;
+    height: 32px;
+}
+
+button.subtract:hover {
+    background-color: #c82333;
+}
+
+button.remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, color 0.3s;
+}
+
+button.remove:hover svg {
+    transform: scale(1.1);
+    /* Slight zoom on hover */
+    fill: #dc3545;
+    /* Change color on hover */
+}
+
+button.remove svg {
+    fill: #888;
+    width: 20px;
+    height: 20px;
+}
+
+button.manage-drinks {
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+body.dark-mode button.remove svg {
+    fill: #ccc;
+}
+
+body.dark-mode button.remove:hover svg {
+    fill: #ff6b6b;
+}
+
+.print-receipt {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ffc107;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.print-receipt:hover {
+    background-color: #e0a800;
+}
+
+/* Light Mode (Default) */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #1e1e1e;
+    color: #f4f4f9;
+}
+
+body.dark-mode .container,
+body.dark-mode .modal-content {
+    background-color: #2e2e2e;
+    color: #f4f4f9;
+}
+
+body.dark-mode .print-receipt {
+    background-color: #ffa500;
+    color: #333;
+}
+
+body.dark-mode .print-receipt:hover {
+    background-color: #cc8400;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    font-size: 18px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-left h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.nav-right {
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-right button {
+    padding: 8px 15px;
+    font-size: 14px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    display: flex;
+    align-items: center;
+
+    svg {
+        fill: white;
+    }
+}
+
+.nav-right #manage-drinks-button {
+    margin-right: 10px;
+}
+
+.nav-right button:hover {
+    background-color: #555;
+}
+
+/* Dark Mode Navbar */
+body.dark-mode .navbar {
+    background-color: #1e1e1e;
+}
+
+body.dark-mode .nav-right button {
+    background-color: #f4f4f9;
+    color: #333;
+
+    svg {
+        fill: black;
+    }
+}
+
+body.dark-mode .nav-right button:hover {
+    background-color: #ddd;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Dim background */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+body.dark-mode .close-button {
+    color: #f4f4f9;
+
+    &:hover,
+    &:focus {
+        color: #fff;
+    }
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+}
+
+#manage-drinks-button {
+    padding: 8px 15px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#manage-drinks-button:hover {
+    background-color: #0056b3;
+}
+
+/* Cards Container with Grid Layout */
+.drink-card-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 cards per row */
+    gap: 15px;
+    /* Space between cards */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Individual Drink Card */
+.drink-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drink-card span {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Delete Button on Card */
+.drink-card button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    svg {
+        fill: #fff;
+        transition: all 0.3s ease-in-out;
+        width: 14px;
+    }
+}
+
+.drink-card button:hover {
+    background-color: #c82333;
+
+    svg {
+        transform: scale(1.1);
+        /* Slight zoom on hover */
+        fill: #fff;
+        /* Change color on hover */
+    }
+}
+
+/* Dark Mode Adjustments */
+body.dark-mode .drink-card {
+    background-color: #2e2e2e;
+    border-color: #444;
+}
+
+body.dark-mode .drink-card span {
+    color: #f4f4f9;
+}
+
+body.dark-mode .drink-card button {
+    background-color: #ff6b6b;
+}
+
+body.dark-mode .drink-card button:hover {
+    background-color: #ff5252;
+}
+
+/* Suggestions Box */
+.suggestions-box {
+    position: absolute;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 536px;
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+    padding: 5px 0;
+    display: none;
+    /* Hidden by default */
+}
+
+.suggestions-box div {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+.suggestions-box div:hover {
+    background-color: #f0f0f0;
+}
+
+/* Dark Mode Suggestions */
+body.dark-mode .suggestions-box {
+    background-color: #2e2e2e;
+    border-color: #444;
+}
+
+body.dark-mode .suggestions-box div {
+    color: #f4f4f9;
+}
+
+body.dark-mode .suggestions-box div:hover {
+    background-color: #444;
+}
+
+/* Load Drinks Styling */
+
+.load-drinks {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.load-drinks:hover {
+    background-color: #138496;
+}
+
+/* -- */
+
+/* Manage Items Button Group */
+.load-state-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.load-state-container>.save-load-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0px;
+}
+
+.load-state-container .save,
+.load-state-container .load,
+.load-state-container .delete {
+    margin-top: 0;
+}
+
+.load-state-container .save,
+.load-state-container .load {
+    margin-right: 5px;
+}
+
+.load-state-container .load,
+.load-state-container .delete {
+    margin-left: 5px;
+}
+
+.load-state-container .delete {
+    background-color: #dc3545;
+    padding: 10px;
+    font-size: 0;
+
+    svg {
+        fill: white;
+    }
+}
+
+.load-options-loading-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.load-options-loading-options>.dropdown-options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#saved-items-list {
+    flex: 1;
+    margin: 0 10px;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.delete-list-options {
+    display: flex;
+
+    #clear-current-list {
+        background-color: #ffc107;
+    }
+
+    #delete-entire-list {
+        background-color: #dc3545;
+        color: white;
+    }
+}
+
+#delete-options-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#delete-options-modal .modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+}
+
+#delete-options-modal button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.file-label {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px 10px 10px 10px;
+}
+
+.file-label:hover {
+    background-color: #0056b3;
+}
+
+/* -- */
+
+/* Mobile Media */
+
+@media (max-width: 768px) {
+    .drink-card-container {
+        grid-template-columns: repeat(3, 1fr);
+        /* 2 cards per row */
+    }
+}
+
+@media (max-width: 480px) {
+    .drink-card-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* 1 card per row */
+    }
+
+    .nav-left h1 {
+        font-size: 20px;
+        margin-right: 15px;
+    }
+
+    .drink-item>span {
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 365px) {
+    .input-section {
+        flex-direction: column;
+    }
+}

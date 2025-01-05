@@ -1,0 +1,6 @@
+{
+  "appId": "com.pub.restock",
+  "appName": "Pub Restock Manager",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
