@@ -791,8 +791,6 @@ clearRestockList.addEventListener("click", () => {
                 class: "btn-confirm",
                 onClick: () => {
                     drinkList.innerHTML = ""; // Clear the list
-                    drinks = [];
-                    saveDrinks();
                     closeModal(); // Close the modal
                 },
             },
