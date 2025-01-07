@@ -21,6 +21,17 @@
       </button>
     </div>
   </nav>
+  
+  <!-- Custom Popup -->
+  <div id="custom-modal" class="custom-modal">
+    <div class="custom-modal-content">
+      <span id="modal-close-button" class="modal-close-button">&times;</span>
+      <h2 id="modal-title">Title</h2>
+      <p id="modal-message">Message</p>
+      <input id="modal-input" class="modal-input" type="text" style="display: none; width: 90%; margin: 10px auto;" />
+      <div id="modal-buttons" class="modal-buttons"></div>
+    </div>
+  </div>
 
   <!-- Manage Drinks Modal -->
   <div id="manage-drinks-modal" class="modal">
@@ -48,7 +59,7 @@
                 <button id="clear-current-list">Clear Current List</button>
                 <button id="delete-entire-list">Delete Entire List</button>
               </div>
-              <button id="cancel-delete">Cancel</button>
+              <button class="btn-cancel" id="cancel-delete">Cancel</button>
             </div>
           </div>
           <div id="load-options-modal" class="modal">
@@ -66,7 +77,7 @@
                   Load from File
                   <input type="file" id="load-from-file" accept=".txt" hidden>
                 </label>
-                <button id="cancel-load">Cancel</button>
+                <button class="btn-cancel" id="cancel-load">Cancel</button>
               </div>
             </div>
           </div>
@@ -76,6 +87,7 @@
     </div>
   </div>
 
+  <!-- Container for Restock List -->
   <div class="container">
     <h1>Pub Restock Manager</h1>
     <div class="input-section">
@@ -84,7 +96,14 @@
       <button id="add-drink">Add</button>
     </div>
     <div id="restock-list">
-      <button class="load-drinks" id="load-drinks">Load Items</button>
+      <div class="load-drinks-options">
+        <button class="load-drinks" id="load-drinks">Load Items</button>
+        <button class="load-drinks delete" id="clear-restock-list">
+            <svg viewBox="0 0 448 512" width="16" title="trash">
+              <path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z" />
+            </svg>
+          </button>
+      </div>
       <h2>Restocking List</h2>
       <ul id="drink-list"></ul>
       <button class="print-receipt" id="print-receipt">Print Receipt</button>
