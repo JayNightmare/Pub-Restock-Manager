@@ -89,8 +89,18 @@ function addDrinkToList(drinkName) {
   });
 
   if (existingDrink) {
-    alert(`${drinkName} is already in the Restocking List.`);
-    return; // Exit if the drink is already in the list
+    showModal({
+      title: "Duplicate Item",
+      message: `${drinkName} is already in the Restocking List.`,
+      buttons: [
+        {
+          text: "OK",
+          class: "btn-confirm",
+          onClick: closeModal,
+        },
+      ],
+    });
+    return;
   }
 
   // Create List Item
@@ -173,7 +183,17 @@ printButton.addEventListener("click", () => {
   if (drinks.length > 0) {
     generateReceipt(drinks);
   } else {
-    alert("No items to print!");
+    showModal({
+      title: "No Items",
+      message: "No items to print!",
+      buttons: [
+        {
+          text: "OK",
+          class: "btn-confirm",
+          onClick: closeModal,
+        },
+      ],
+    });
   }
 });
 
@@ -314,11 +334,28 @@ function renderDrinkList() {
     </svg>
   `;
     deleteButton.addEventListener("click", () => {
-      if (confirm(`Are you sure you want to delete "${drink}"?`)) {
-        drinks.splice(index, 1); // Remove the drink from the list
-        saveDrinks();
-        renderDrinkList();
-      }
+      // Use showModal instead of confirm
+      showModal({
+        title: "Delete Drink",
+        message: `Are you sure you want to delete "${drink}"?`,
+        buttons: [
+          {
+            text: "Yes",
+            class: "btn-confirm",
+            onClick: () => {
+              drinks.splice(index, 1); // Remove the drink from the list
+              saveDrinks();
+              renderDrinkList(); // Refresh the UI
+              closeModal(); // Close the modal
+            },
+          },
+          {
+            text: "Cancel",
+            class: "btn-cancel",
+            onClick: closeModal, // Close the modal without deleting
+          },
+        ],
+      });
     });
 
     card.appendChild(drinkName);
@@ -354,6 +391,21 @@ renderDrinkList();
 const loadDrinksButton = document.getElementById("load-drinks");
 
 loadDrinksButton.addEventListener("click", () => {
+  if (drinks.length === 0) {
+    showModal({
+      title: "No Items Available",
+      message: "No drinks available to load.",
+      buttons: [
+        {
+          text: "OK",
+          class: "btn-confirm",
+          onClick: closeModal,
+        },
+      ],
+    });
+    return;
+  }
+  
   // Loop through drinks and add them to the Restocking List
   drinks.forEach((drink) => {
     // Check if the drink is already in the Restocking List
@@ -366,7 +418,17 @@ loadDrinksButton.addEventListener("click", () => {
     }
   });
 
-  alert("Drinks have been loaded into the Restocking List!");
+  showModal({
+    title: "Success",
+    message: "Drinks have been loaded into the Restocking List!",
+    buttons: [
+      {
+        text: "OK",
+        class: "btn-confirm",
+        onClick: closeModal,
+      },
+    ],
+  });
 });
 
 const loadOptionsModal = document.getElementById("load-options-modal");
@@ -394,14 +456,29 @@ loadFromDropdownButton.addEventListener("click", () => {
     drinks = [...savedDrinks];
     saveDrinks();
     renderDrinkList();
-    alert(
-      `List "${selectedPreset.replace(
-        "drinks-preset-",
-        ""
-      )}" loaded successfully!`
-    );
+    showModal({
+      title: "Success",
+      message: `List "${selectedPreset.replace("drinks-preset-", "")}" loaded successfully!`,
+      buttons: [
+        {
+          text: "OK",
+          class: "btn-confirm",
+          onClick: closeModal,
+        },
+      ],
+    });
   } else {
-    alert("Failed to load the selected list.");
+    showModal({
+      title: "Error",
+      message: `Failed to load the selected list`,
+      buttons: [
+        {
+          text: "OK",
+          class: "btn-confirm",
+          onClick: closeModal,
+        },
+      ],
+    });
   }
 
   loadOptionsModal.style.display = "none"; // Close modal
@@ -409,7 +486,7 @@ loadFromDropdownButton.addEventListener("click", () => {
 
 // Load from File
 loadFromFileInput.addEventListener("change", (event) => {
-  const file = event.target.files[0];
+  const file = event.target.files[0]; // Properly reference the file
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -417,26 +494,77 @@ loadFromFileInput.addEventListener("change", (event) => {
       // Parse the file content into the drinks array
       drinks = fileContent.split(",").map((item) => item.trim());
 
-      // Prompt the user for a name for the list
-      const listName = prompt("Enter a name for this list:");
-      if (!listName) {
-        alert("List name cannot be empty. List will not be saved to dropdown.");
-        return;
-      }
+      // Use the modal to prompt the user for a list name
+      showModal({
+        title: "Name the List",
+        message: "Save a name for the list:",
+        input: true, // Enable the input field
+        placeholder: "List Name", // Input placeholder
+        buttons: [
+          {
+            text: "Load",
+            class: "btn-confirm",
+            onClick: (listName) => {
+              if (!listName) {
+                showModal({
+                  title: "Error",
+                  message: "List name cannot be empty. List will not be saved to dropdown.",
+                  buttons: [
+                    {
+                      text: "OK",
+                      class: "btn-confirm",
+                      onClick: closeModal,
+                    },
+                  ],
+                });
+                return;
+              }
 
-      // Save the list to localStorage under the given name
-      localStorage.setItem(`drinks-preset-${listName}`, JSON.stringify(drinks));
+              // Save the list to localStorage under the given name
+              localStorage.setItem(`drinks-preset-${listName}`, JSON.stringify(drinks));
 
-      // Update the dropdown with the new list
-      updateSavedItemsDropdown();
+              // Update the dropdown with the new list
+              updateSavedItemsDropdown();
 
-      // Save the list to global drinks and update the UI
-      saveDrinks();
-      renderDrinkList();
+              // Save the list to global drinks and update the UI
+              saveDrinks();
+              renderDrinkList();
 
-      alert(`List "${listName}" loaded successfully from file and saved.`);
+              // Show success modal
+              showModal({
+                title: "Success",
+                message: `List "${listName}" loaded successfully from file and saved.`,
+                buttons: [
+                  {
+                    text: "OK",
+                    class: "btn-confirm",
+                    onClick: closeModal,
+                  },
+                ],
+              });
+            },
+          },
+          {
+            text: "Cancel",
+            class: "btn-cancel",
+            onClick: closeModal,
+          },
+        ],
+      });
     };
     reader.readAsText(file);
+  } else {
+    showModal({
+      title: "Error",
+      message: "No file selected. Please select a valid file.",
+      buttons: [
+        {
+          text: "OK",
+          class: "btn-confirm",
+          onClick: closeModal,
+        },
+      ],
+    });
   }
 
   loadOptionsModal.style.display = "none"; // Close modal
@@ -467,29 +595,66 @@ updateSavedItemsDropdown();
 
 // Save current drinks list to localStorage
 saveItemsButton.addEventListener("click", () => {
-  const presetName = prompt("Enter a name for this list:");
-  if (!presetName) {
-    alert("List name cannot be empty.");
-    return;
-  }
+  showModal({
+    title: "Save List",
+    message: "Enter a name for this list:",
+    input: true, // Enable input field
+    placeholder: "List Name", // Placeholder for input field
+    buttons: [
+      {
+        text: "Save",
+        class: "btn-confirm",
+        onClick: (presetName) => {
+          if (!presetName) {
+            showModal({
+              title: "Error",
+              message: "List name cannot be empty.",
+              buttons: [
+                {
+                  text: "OK",
+                  class: "btn-confirm",
+                  onClick: closeModal,
+                },
+              ],
+            });
+            return;
+          }
 
-  // Save drinks to localStorage
-  const currentDrinks = [...drinks];
-  localStorage.setItem(
-    `drinks-preset-${presetName}`,
-    JSON.stringify(currentDrinks)
-  );
+          // Save drinks to localStorage
+          const currentDrinks = [...drinks];
+          localStorage.setItem(`drinks-preset-${presetName}`, JSON.stringify(currentDrinks));
 
-  // Save as .txt file
-  const blob = new Blob([currentDrinks.join(",")], { type: "text/plain" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = `${presetName}.txt`;
-  link.click();
+          // Save as .txt file
+          const blob = new Blob([currentDrinks.join(",")], { type: "text/plain" });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `${presetName}.txt`;
+          link.click();
 
-  // Update dropdown
-  updateSavedItemsDropdown();
-  alert(`List "${presetName}" saved successfully!`);
+          // Update dropdown
+          updateSavedItemsDropdown();
+
+          // Success modal
+          showModal({
+            title: "Success",
+            message: `List "${presetName}" saved successfully!`,
+            buttons: [
+              {
+                text: "OK",
+                class: "btn-confirm",
+                onClick: closeModal,
+              },
+            ],
+          });
+        },
+      },
+      {
+        text: "Cancel",
+        class: "btn-cancel",
+        onClick: closeModal,
+      },
+    ],
+  });
 });
 
 // Delete Button Logic
@@ -515,7 +680,17 @@ clearCurrentListButton.addEventListener("click", () => {
   saveDrinks(); // Save the cleared drinks array to localStorage
   renderDrinkList(); // Refresh the Manage Items UI
 
-  alert("The current list has been cleared.");
+  showModal({
+    title: "Success",
+    message: `The current list has been cleared!`,
+    buttons: [
+      {
+        text: "OK",
+        class: "btn-confirm",
+        onClick: closeModal,
+      },
+    ],
+  });
   deleteOptionsModal.style.display = "none"; // Close the modal
 });
 
@@ -527,7 +702,17 @@ deleteEntireListButton.addEventListener("click", () => {
   const presetKeys = keys.filter((key) => key.startsWith("drinks-preset-"));
 
   if (presetKeys.length === 0) {
-    alert("No saved lists found to delete.");
+    showModal({
+      title: "No Lists Found",
+      message: "No saved lists found to delete.",
+      buttons: [
+        {
+          text: "OK",
+          class: "btn-confirm",
+          onClick: closeModal,
+        },
+      ],
+    });
     return;
   }
 
@@ -539,31 +724,137 @@ deleteEntireListButton.addEventListener("click", () => {
           ""
         )}"?`
       : `Are you sure you want to delete all saved lists (${presetKeys.length} lists)?`;
-  if (!confirm(confirmMessage)) return;
 
-  // Delete matching keys from localStorage
-  presetKeys.forEach((key) => {
-    localStorage.removeItem(key);
+  showModal({
+    title: "Confirm Deletion",
+    message: confirmMessage,
+    buttons: [
+      {
+        text: "Yes",
+        class: "btn-confirm",
+        onClick: () => {
+          // Delete matching keys from localStorage
+          presetKeys.forEach((key) => {
+            localStorage.removeItem(key);
+          });
+
+          // Update the dropdown options
+          updateSavedItemsDropdown();
+
+          // Reset the `drinks` array and clear UI
+          drinks = [];
+          saveDrinks();
+          renderDrinkList();
+
+          // Show success modal
+          showModal({
+            title: "Deleted",
+            message:
+              presetKeys.length === 1
+                ? `The list "${presetKeys[0].replace(
+                    "drinks-preset-",
+                    ""
+                  )}" has been deleted.`
+                : `All saved lists (${presetKeys.length} lists) have been deleted.`,
+            buttons: [
+              {
+                text: "OK",
+                class: "btn-confirm",
+                onClick: closeModal,
+              },
+            ],
+          });
+        },
+      },
+      {
+        text: "Cancel",
+        class: "btn-cancel",
+        onClick: closeModal,
+      },
+    ],
   });
 
-  // Update the dropdown options
-  updateSavedItemsDropdown();
-
-  // If the current drinks list matches a deleted preset, clear the UI
-  drinks = [];
-  saveDrinks();
-  renderDrinkList();
-
-  // Notify the user
-  alert(
-    presetKeys.length === 1
-      ? `The list "${presetKeys[0].replace(
-          "drinks-preset-",
-          ""
-        )}" has been deleted.`
-      : `All saved lists (${presetKeys.length} lists) have been deleted.`
-  );
-
-  // Close the modal
+  // Close the delete options modal
   deleteOptionsModal.style.display = "none";
+});
+
+// Clear drinks from list
+const clearRestockList = document.getElementById('clear-restock-list');
+
+clearRestockList.addEventListener("click", () => {
+  showModal({
+        title: "Clear Restocking List",
+        message: "Are you sure you want to clear all items from the Restocking List?",
+        buttons: [
+            {
+                text: "Yes",
+                class: "btn-confirm",
+                onClick: () => {
+                    drinkList.innerHTML = ""; // Clear the list
+                    drinks = [];
+                    saveDrinks();
+                    closeModal(); // Close the modal
+                },
+            },
+            {
+                text: "Cancel",
+                class: "btn-cancel",
+                onClick: closeModal,
+            },
+        ],
+    });
+});
+
+// Custom Popup Logic
+// Get modal elements
+const modal = document.getElementById("custom-modal");
+const modalTitle = document.getElementById("modal-title");
+const modalMessage = document.getElementById("modal-message");
+const modalButtons = document.getElementById("modal-buttons");
+const modalCloseButton = document.getElementById("modal-close-button");
+
+// Show Modal Function
+function showModal({ title, message, input = false, placeholder = "", buttons }) {
+  modalTitle.textContent = title;
+  modalMessage.textContent = message;
+
+  // Clear existing buttons
+  modalButtons.innerHTML = "";
+
+  // Clear or add input field based on `input` parameter
+  const inputField = document.getElementById("modal-input");
+  if (input) {
+    inputField.style.display = "block";
+    inputField.placeholder = placeholder;
+    inputField.value = ""; // Clear any previous value
+  } else {
+    inputField.style.display = "none";
+  }
+
+  // Add new buttons
+  buttons.forEach((button) => {
+    const btn = document.createElement("button");
+    btn.textContent = button.text;
+    btn.className = button.class || "btn-confirm";
+    btn.addEventListener("click", () => button.onClick(input ? inputField.value : undefined));
+    modalButtons.appendChild(btn);
+  });
+
+  // Show the modal
+  modal.style.display = "block";
+}
+
+// Close Modal Function
+function closeModal() {
+    modal.style.display = "none";
+}
+
+// Close the modal when the close button is clicked
+modalCloseButton.addEventListener("click", closeModal);
+
+// Close the modal when clicking outside the modal content
+window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+        closeModal();
+    }
 });
