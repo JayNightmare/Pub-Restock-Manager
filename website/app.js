@@ -206,76 +206,126 @@ printButton.addEventListener("click", () => {
 
 // Function to generate and print the receipt
 function generateReceipt(drinks) {
-  const receiptWindow = window.open("", "_blank");
-  receiptWindow.document.write(`
-    <html>
-      <head>
-        <title>Receipt</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            width: 57mm; /* Set the width to match PDQ paper */
-            font-size: 12px; /* Adjust font size for small receipt */
-          }
-          h1 {
-            text-align: center;
-            font-size: 14px;
-            margin: 5px 0;
-          }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-          }
-          th, td {
-            padding: 5px;
-            text-align: left;
-            font-size: 12px;
-            border-bottom: 1px dashed #333;
-          }
-          th {
-            font-weight: bold;
-          }
-          tr:last-child td {
-            border-bottom: none; /* Remove border for the last row */
-          }
-          p {
-            text-align: center;
-            margin: 10px 0;
-            font-size: 12px;
-          }
-        </style>
-      </head>
-      <body>
-        <h1>Restocking Receipt</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Drink</th>
-              <th>Qty</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${drinks
-              .map(
-                (drink) => `
-                <tr>
-                  <td>${drink.name}</td>
-                  <td>${drink.count}</td>
-                </tr>
-              `
-              )
-              .join("")}
-          </tbody>
-        </table>
-        <p>Thank you for using Pub Restock Manager!</p>
-      </body>
-    </html>
-  `);
-  receiptWindow.document.close();
-  receiptWindow.print();
+    // Create a full-screen modal-like container for the receipt
+    const receiptContainer = document.createElement("div");
+    receiptContainer.classList.add("receiptContainer");
+    receiptContainer.style.position = "fixed";
+    receiptContainer.style.top = "0";
+    receiptContainer.style.left = "0";
+    receiptContainer.style.width = "100%";
+    receiptContainer.style.height = "100%";
+    receiptContainer.style.backgroundColor = "white";
+    receiptContainer.style.zIndex = "1000";
+    receiptContainer.style.overflowY = "auto";
+  
+    // Create NavBar for top element buttons
+    const navBar = document.createElement("nav");
+    navBar.classList.add("navbar");
+    navBar.style.backgroundColor = "transparent";
+    navBar.style.boxShadow = "none";
+
+    // Back button to close the receipt view
+    const backButton = document.createElement("button");
+    backButton.classList.add("navbar-left");
+    backButton.textContent = "Back";
+    backButton.style.padding = "10px 15px";
+    backButton.style.backgroundColor = "#007bff";
+    backButton.style.color = "white";
+    backButton.style.border = "none";
+    backButton.style.borderRadius = "5px";
+    backButton.style.cursor = "pointer";
+    backButton.style.fontSize = "16px";
+
+    // Add an event listener to the back button
+    backButton.addEventListener("click", () => {
+        document.body.removeChild(receiptContainer); // Remove the receipt view
+    });
+  
+    // Create sub container within to apply correct margin
+    const subContainer = document.createElement("div");
+    subContainer.style.marginTop = "20px";
+
+    // Receipt title
+    const title = document.createElement("h1");
+    title.textContent = "Restocking Receipt";
+    title.style.textAlign = "center";
+    title.style.margin = "20px 0";
+    title.style.fontSize = "24px";
+  
+    // Table Div
+    const tableDiv = document.createElement("div");
+    tableDiv.style.margin = "20px";
+
+    // Table to display the drinks and quantities
+    const table = document.createElement("table");
+    table.style.width = "100%";
+    table.style.borderCollapse = "collapse";
+    table.style.fontSize = "18px";    
+
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    const drinkHeader = document.createElement("th");
+    drinkHeader.textContent = "Drink";
+    drinkHeader.style.textAlign = "left";
+    drinkHeader.style.padding = "10px";
+    drinkHeader.style.borderBottom = "2px solid #ddd";
+
+    const quantityHeader = document.createElement("th");
+    quantityHeader.textContent = "Qty";
+    quantityHeader.style.textAlign = "left";
+    quantityHeader.style.padding = "10px";
+    quantityHeader.style.borderBottom = "2px solid #ddd";
+
+    headerRow.appendChild(drinkHeader);
+    headerRow.appendChild(quantityHeader);
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Add drinks to the table
+    const tbody = document.createElement("tbody");
+    drinks.forEach((drink) => {
+        const row = document.createElement("tr");
+
+        const drinkName = document.createElement("td");
+        drinkName.textContent = drink.name;
+        drinkName.style.padding = "10px";
+        drinkName.style.borderBottom = "1px solid #ddd";
+
+        const drinkQuantity = document.createElement("td");
+        drinkQuantity.textContent = drink.count;
+        drinkQuantity.style.padding = "10px";
+        drinkQuantity.style.borderBottom = "1px solid #ddd";
+
+        row.appendChild(drinkName);
+        row.appendChild(drinkQuantity);
+        tbody.appendChild(row);
+    });
+
+    table.appendChild(tbody);
+
+    // Add a footer message
+    const footerMessage = document.createElement("p");
+    footerMessage.textContent = "Thank you for using Pub Restock Manager!";
+    footerMessage.style.textAlign = "center";
+    footerMessage.style.marginTop = "20px";
+    footerMessage.style.fontSize = "16px";
+
+    // Append everything to the correct containers
+    receiptContainer.appendChild(navBar);
+  
+    navBar.appendChild(backButton);
+  
+    receiptContainer.appendChild(subContainer);
+  
+    subContainer.appendChild(title);
+    subContainer.appendChild(tableDiv);
+  
+    tableDiv.appendChild(table);
+  
+    subContainer.appendChild(footerMessage);
+
+    // Append the receipt container to the body
+    document.body.appendChild(receiptContainer);
 }
 
 // -- //
