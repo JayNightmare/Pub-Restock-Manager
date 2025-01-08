@@ -7,9 +7,16 @@ addDrinkButton.addEventListener("click", handleAddDrink);
 
 const suggestionsBox = document.getElementById("suggestions-box");
 
+// Sanitize Input
+function sanitizeInput(input) {
+  const invalidChars = /[<>\"'\/&\\()+-=]/;
+  if (invalidChars.test(input)) return false;
+  return input;
+}
+
 // Filter and Display Suggestions
 drinkInput.addEventListener("input", () => {
-  const inputValue = drinkInput.value.trim().toLowerCase();
+  const inputValue = sanitizeInput(drinkInput.value.trim().toLowerCase());
   suggestionsBox.innerHTML = ""; // Clear previous suggestions
 
   if (inputValue === "") {
@@ -25,9 +32,9 @@ drinkInput.addEventListener("input", () => {
     suggestionsBox.style.display = "block";
     filteredDrinks.forEach((drink) => {
       const suggestion = document.createElement("div");
-      suggestion.textContent = drink;
+      suggestion.textContent = sanitizeInput(drink); // Render as plain text
       suggestion.addEventListener("click", () => {
-        drinkInput.value = drink; // Populate input with clicked suggestion
+        drinkInput.value = sanitizeInput(drink); // Populate input with sanitized suggestion
         suggestionsBox.innerHTML = ""; // Clear suggestions
         suggestionsBox.style.display = "none"; // Hide suggestions box
       });
@@ -52,17 +59,17 @@ drinkInput.addEventListener("keydown", (event) => {
     // Get the first suggestion if available
     const firstSuggestion = suggestionsBox.querySelector("div");
     if (firstSuggestion) {
-      drinkInput.value = firstSuggestion.textContent; // Fill input with first suggestion
-      suggestionsBox.innerHTML = ""; // Clear suggestions
-      suggestionsBox.style.display = "none"; // Hide suggestions box
+      drinkInput.value = sanitizeInput(firstSuggestion.textContent);
+      suggestionsBox.innerHTML = "";
+      suggestionsBox.style.display = "none";
     }
 
-    handleAddDrink(); // Add the drink to the list
+    handleAddDrink();
   }
 });
 
 function handleAddDrink() {
-  const drinkName = drinkInput.value.trim();
+  const drinkName = sanitizeInput(drinkInput.value.trim());
 
   if (drinkName) {
     addDrinkToList(drinkName);
@@ -73,7 +80,7 @@ function handleAddDrink() {
 
 // Add event listener to the Add button
 addDrinkButton.addEventListener("click", () => {
-  const drinkName = drinkInput.value.trim();
+  const drinkName = sanitizeInput(drinkInput.value.trim());
 
   if (drinkName) {
     addDrinkToList(drinkName);
@@ -109,7 +116,7 @@ function addDrinkToList(drinkName) {
 
   // Drink Name
   const name = document.createElement("span");
-  name.textContent = drinkName;
+  name.textContent = sanitizeInput(drinkName); // Ensure plain text rendering
 
   // Buttons and Count
   const buttonsContainer = document.createElement("div");
