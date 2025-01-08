@@ -185,9 +185,10 @@ body.dark-mode {
 
 body.dark-mode .container,
 body.dark-mode .modal-content,
-body.dark-mode .custom-modal-content {
-  background-color: #2e2e2e;
-  color: #f4f4f9;
+body.dark-mode .custom-modal-content,
+body.dark-mode .receiptContainer {
+  background-color: #2e2e2e !important;
+  color: #f4f4f9 !important;
 }
 
 body.dark-mode .print-receipt {
@@ -268,7 +269,10 @@ body.dark-mode .nav-right button:hover {
 /* Transition for styles */
 .load-drinks,
 .add-drink,
-.print-receipt {
+.print-receipt,
+button.add,
+button.remove svg,
+button.subtract {
   transition: all 0.3s;
 }
 
@@ -731,7 +735,7 @@ body.dark-mode .suggestions-box div:hover {
   }
 
   .nav-left h1 {
-    font-size: 20px;
+    font-size: 15px;
     margin-right: 15px;
   }
 
