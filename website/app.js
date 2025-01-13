@@ -10,7 +10,7 @@ const suggestionsBox = document.getElementById("suggestions-box");
 // Sanitize Input
 function sanitizeInput(input) {
   const invalidChars = /[<>\"'\/&\\()+-=]/;
-  if (invalidChars.test(input)) return false;
+  if (invalidChars.test(input)) return input;
   return input;
 }
 
