@@ -523,8 +523,9 @@ body.dark-mode .suggestions-box div:hover {
 
 .load-options-loading-options > .dropdown-options {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 #saved-items-list {
@@ -581,7 +582,16 @@ body.dark-mode .suggestions-box div:hover {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
-  margin: 20px 10px 10px 10px;
+}
+
+.load-from-file {
+  margin-bottom: 20px;
+}
+
+.load-options-loading-options hr {
+  margin-bottom: 20px;
+  width: 80%;
+  border: 1px solid #ddd;
 }
 
 .file-label:hover {

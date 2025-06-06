@@ -2,9 +2,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pub Restock Manager</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="./assets/favicon.ico">
 </head>
 
 <body>
@@ -68,12 +69,14 @@
               <p>How would you like to load your list?</p>
               <div class="load-options-loading-options">
                 <div class="dropdown-options">
-                  <button class="file-label" id="load-from-dropdown">Load from Dropdown</button>
+                  <label for="saved-items-list">Saved Items List:</label>
                   <select id="saved-items-list">
                     <option value="">Select a saved list</option>
                   </select>
+                  <button class="file-label" id="load-from-dropdown">Load from Dropdown</button>
                 </div>
-                <label for="load-from-file" class="file-label">
+                <hr>
+                <label for="load-from-file" class="file-label load-from-file">
                   Load from File
                   <input type="file" id="load-from-file" accept=".txt" hidden>
                 </label>
