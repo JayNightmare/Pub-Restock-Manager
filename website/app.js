@@ -206,14 +206,12 @@ printButton.addEventListener("click", () => {
 
 // Function to generate and print the receipt
 function generateReceipt(drinks) {
-  const receiptWindow = window.open('/receipt', '');
+  const receiptWindow = window.open(`${window.location.origin}/receipt`, '_blank');
   receiptWindow.document.write(`<!DOCTYPE html>
-<html lang="en">
+<html lang="en"></html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="icon" href="./assets/favicon.ico">
   <title>Restocking Receipt</title>
   <style>
     body { font-family: sans-serif; margin: 20px; }
